@@ -6,6 +6,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+
 def read_creator_urls(file_path):
     with open(file_path, 'r') as file:
         return [line.strip() for line in file if line.strip()]
@@ -36,9 +37,12 @@ def get_model_links(creator_url, output_file):
     return model_links
 
 
+# Get the directory of the current script
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
 # Assume we have a file called 'creator_urls.txt' with one URL per line
-creator_urls_file = 'A:\\Programs\\Cults3D-Image-Downloader\\creator_urls.txt'
-output_file = 'A:\\Programs\\Cults3D-Image-Downloader\\model_links.txt'
+creator_urls_file = os.path.join(script_dir, 'creator_urls.txt')
+output_file = os.path.join(script_dir, 'model_links.txt')
 
 # Clear the output file before appending new links
 open(output_file, 'w').close()
@@ -122,8 +126,9 @@ def download_images(file_links, download_folder):
 with open(output_file, 'r') as file:
     file_links = [line.strip() for line in file if line.strip()]
 
+repo_folder = os.path.dirname(os.path.abspath(__file__))
+download_folder = os.path.join(repo_folder, "Downloads")
 if file_links:
-    download_folder = r"A:\Programs\Cults3D-Image-Downloader\Downloads"
     download_images(file_links, download_folder)
 else:
     print("No links to download.")
